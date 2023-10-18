@@ -65,38 +65,38 @@
       // }
 
       const getLocationButton = document.getElementById('getLocationButton');
-const locationInfo = document.getElementById('locationInfo');
-
-getLocationButton.addEventListener('click', () => {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                locationInfo.textContent = location;
-            },
-            (error) => {
-                locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
-            }
-        );
-    } else {
-        locationInfo.textContent = 'Geolocation tidak didukung oleh peramban ini.';
-    }
-});
-
-
-      function getLocation() {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
-            locationInfo.textContent = location;
-          },
-          (error) => {
-            locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
+      const locationInfo = document.getElementById('locationInfo');
+      
+      getLocationButton.addEventListener('click', () => {
+          if ("geolocation" in navigator) {
+              navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                      const { latitude, longitude } = position.coords;
+                      const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                      locationInfo.textContent = location;
+                  },
+                  (error) => {
+                      locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
+                  }
+              );
+          } else {
+              locationInfo.textContent = 'Geolocation tidak didukung oleh peramban ini.';
           }
-        );
-      }
+      });
+
+
+      // function getLocation() {
+      //   navigator.geolocation.getCurrentPosition(
+      //     (position) => {
+      //       const { latitude, longitude } = position.coords;
+      //       const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      //       locationInfo.textContent = location;
+      //     },
+      //     (error) => {
+      //       locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
+      //     }
+      //   );
+      // }
     </script>
   </body>
 </html>
