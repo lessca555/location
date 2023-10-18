@@ -1,68 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lokasi Pengguna</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Lokasi Pengguna</h1>
     <button id="getLocationButton">Dapatkan Lokasi</button>
     <p id="locationInfo"></p>
 
     <script>
-        const getLocationButton = document.getElementById('getLocationButton');
-        const locationInfo = document.getElementById('locationInfo');
+      // const getLocationButton = document.getElementById('getLocationButton');
+      // const locationInfo = document.getElementById('locationInfo');
 
-        getLocationButton.addEventListener('click', async () => {
-            // Minta izin lokasi
-            try {
-                const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-                if (permissionStatus.state === 'granted') {
-                    // Izin diberikan, dapatkan lokasi
-                    getLocation();
-                } else if (permissionStatus.state === 'prompt') {
-                    // Izin belum diberikan, tampilkan permintaan izin
-                    const permission = await navigator.permissions.request({ name: 'geolocation' });
-                    if (permission.state === 'granted') {
-                        // Izin diberikan, dapatkan lokasi
-                        getLocation();
-                    } else {
-                        locationInfo.textContent = 'Izin lokasi tidak diberikan.';
-                    }
-                } else {
-                    locationInfo.textContent = 'Izin lokasi tidak diberikan.';
-                }
-            } catch (error) {
-                locationInfo.textContent = 'Terjadi kesalahan dalam mendapatkan izin lokasi.';
-                console.error(error);
-            }
-        });
+      // getLocationButton.addEventListener('click', async () => {
+      //     // Minta izin lokasi
+      //     try {
+      //         const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+      //         if (permissionStatus.state === 'granted') {
+      //             // Izin diberikan, dapatkan lokasi
+      //             getLocation();
+      //         } else if (permissionStatus.state === 'prompt') {
+      //             // Izin belum diberikan, tampilkan permintaan izin
+      //             const permission = await navigator.permissions.request({ name: 'geolocation' });
+      //             if (permission.state === 'granted') {
+      //                 // Izin diberikan, dapatkan lokasi
+      //                 getLocation();
+      //             } else {
+      //                 locationInfo.textContent = 'Izin lokasi tidak diberikan.';
+      //             }
+      //         } else {
+      //             locationInfo.textContent = 'Izin lokasi tidak diberikan.';
+      //         }
+      //     } catch (error) {
+      //         locationInfo.textContent = 'Terjadi kesalahan dalam mendapatkan izin lokasi.';
+      //         console.error(error);
+      //     }
+      // });
 
-        function getLocation() {
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const { latitude, longitude } = position.coords;
-                    const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                    locationInfo.textContent = location;
+      // function getLocation() {
+      //     if ('geolocation' in navigator) {
+      //         navigator.geolocation.getCurrentPosition((position) => {
+      //             const { latitude, longitude } = position.coords;
+      //             const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+      //             locationInfo.textContent = location;
 
-                    // Menggunakan Geocoding API untuk mendapatkan alamat
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const address = data.display_name;
-                            locationInfo.textContent = `Alamat: ${address}\n${location}`;
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                        });
-                }, (error) => {
-                    locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
-                });
+      //             // Menggunakan Geocoding API untuk mendapatkan alamat
+      //             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+      //                 .then((response) => response.json())
+      //                 .then((data) => {
+      //                     const address = data.display_name;
+      //                     locationInfo.textContent = `Alamat: ${address}\n${location}`;
+      //                 })
+      //                 .catch((error) => {
+      //                     console.error(error);
+      //                 });
+      //         }, (error) => {
+      //             locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
+      //         });
+      //     } else {
+      //         locationInfo.textContent = 'Geolocation tidak didukung oleh peramban ini.';
+      //     }
+      // }
+
+      const getLocationButton = document.getElementById("getLocationButton");
+      const locationInfo = document.getElementById("locationInfo");
+
+      getLocationButton.addEventListener("click", async () => {
+        try {
+          const permissionStatus = await navigator.permissions.query({
+            name: "geolocation",
+          });
+          if (permissionStatus.state === "granted") {
+            getLocation();
+          } else if (permissionStatus.state === "prompt") {
+            const permission = await navigator.permissions.request({
+              name: "geolocation",
+            });
+            if (permission.state === "granted") {
+              getLocation();
             } else {
-                locationInfo.textContent = 'Geolocation tidak didukung oleh peramban ini.';
+              locationInfo.textContent = "Izin lokasi tidak diberikan.";
             }
+          } else {
+            locationInfo.textContent = "Izin lokasi tidak diberikan.";
+          }
+        } catch (error) {
+          locationInfo.textContent =
+            "Terjadi kesalahan dalam mendapatkan izin lokasi.";
+          console.error(error);
         }
+      });
+
+      function getLocation() {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const location = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            locationInfo.textContent = location;
+          },
+          (error) => {
+            locationInfo.textContent = `Gagal mendapatkan lokasi: ${error.message}`;
+          }
+        );
+      }
     </script>
-</body>
+  </body>
 </html>
